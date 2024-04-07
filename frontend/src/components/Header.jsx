@@ -1,24 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import Logout from "./Logout";
-import ClientLogo from "../images/client-logo.png"
-import CustomerLogo from "../images/customer-logo.png"
+import ClientLogo from "../images/client-logo.png";
+import CustomerLogo from "../images/customer-logo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ currentUser }) {
-    console.log("header: ", currentUser.type == "Seller");
+    // console.log("header: ", currentUser.type == "Seller");
+    const navigate = useNavigate();
+
+    if (currentUser == undefined) {
+        navigate("/");
+        return;
+    }
+
     return (
         <Container>
             <IconWrapper>
                 {currentUser.type == "Seller" ? (
-                    <UserImage
-                        src={ClientLogo}
-                        alt="Seller User Image"
-                    />
+                    <UserImage src={ClientLogo} alt="Seller User Image" />
                 ) : (
-                    <UserImage
-                        src={CustomerLogo}
-                        alt="Buyer User Image"
-                    />
+                    <UserImage src={CustomerLogo} alt="Buyer User Image" />
                 )}
             </IconWrapper>
             {currentUser ? (
@@ -45,6 +47,7 @@ const Container = styled.div`
     padding: 10px 20px;
     background-color: #f5f5f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
 `;
 
 const IconWrapper = styled.div`

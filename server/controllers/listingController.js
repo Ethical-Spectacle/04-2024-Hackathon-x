@@ -49,3 +49,5 @@ module.exports.getAllWasteEntries = async (req, res, next) => {
         res.status(500).json({ error: "Error fetching waste entries" });
     }
 };
+
+// module.exports.updateWasteEntry = 

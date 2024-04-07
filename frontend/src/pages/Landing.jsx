@@ -62,9 +62,9 @@ const Container = styled.div`
     align-items: center;
     background-color: #ffffff;
     .container {
-        height: 85vh;
-        width: 85vw;
-        background-color: ##dcd4fe;
+        height: 100vh;
+        width: 100vw;
+        background-color: #dcd4fe;
         justify-content: space-between;
         flex-direction: column;
         display: flex;
