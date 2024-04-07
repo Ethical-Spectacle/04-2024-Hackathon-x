@@ -11,8 +11,8 @@ const itemsData = [
         type: "Beef",
         min: 1.5,
         max: 2.566,
-        amount: "101.45 lb",
-        costPerPound: 1.29,
+        amount: "1 lb",
+        costPerPound: 5.132,
     },
     {
         id: 2,
@@ -21,8 +21,8 @@ const itemsData = [
         type: "Chicken",
         min: 1.25,
         max: 2.05,
-        amount: "9.5 lb",
-        costPerPound: 1.34,
+        amount: "1 lb",
+        costPerPound: 4.1,
     },
     {
         id: 3,
@@ -31,8 +31,8 @@ const itemsData = [
         type: "Turkey",
         min: 1.06,
         max: 2.01,
-        amount: "3.56 lb",
-        costPerPound: 2.01,
+        amount: "1 lb",
+        costPerPound: 4.02,
     },
     {
         id: 4,
@@ -41,8 +41,8 @@ const itemsData = [
         type: "Fish",
         min: 1.2,
         max: 2.3,
-        amount: "1.34 lb",
-        costPerPound: 1.01,
+        amount: "1 lb",
+        costPerPound: 4.6,
     },
     {
         id: 5,
@@ -51,8 +51,8 @@ const itemsData = [
         type: "Lamb",
         min: 2,
         max: 3.4,
-        amount: "23.3 lb",
-        costPerPound: 5.23,
+        amount: "1 lb",
+        costPerPound: 6.8,
     },
     // Add more items as needed
 ];
