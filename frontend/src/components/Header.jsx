@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Logout from "./Logout";
 import ClientLogo from "../images/logo.jpeg";
-import CustomerLogo from "../images/customer-logo.png";
+import CustomerLogo from "../images/logo.jpeg";
 import { useNavigate } from "react-router-dom";
 import Marketplace from "./Marketplace";
 
@@ -20,7 +20,11 @@ export default function Header({
     }
 
     const handleDashboardClick = () => {
-        setShowDashboard(!showDashboard);
+        if (setShowDashboard) {
+            setShowDashboard(!showDashboard);
+        } else {
+            navigate("/");
+        }
     };
 
     return (

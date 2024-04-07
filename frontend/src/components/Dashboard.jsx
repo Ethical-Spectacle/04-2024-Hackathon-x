@@ -66,6 +66,36 @@ export default function Dashboard() {
             .attr("height", (d) => height - y(d.value))
             .attr("fill", "#856cf4");
 
+        // X Axis
+        svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .append("text")
+            .attr("x", width / 2)
+            .attr("y", 35) // Adjusted position
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Types of Meat");
+
+        // Y Axis
+        svg.append("g")
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -140) // Adjusted position
+            .attr("x", -height / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Pounds");
+
+        // Visualization Name
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", -5) // Adjusted position
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text("Meat Consumption per Type");
+
         // Total excess meat transactions line chart
         const lineChartMargin = { top: 20, right: 30, bottom: 30, left: 40 };
         const lineChartWidth =
@@ -107,6 +137,33 @@ export default function Dashboard() {
             .x((d) => xLine(d.month) + xLine.bandwidth() / 2)
             .y((d) => yLine(d.value));
 
+        // Adding x-axis label
+        lineChartSvg
+            .append("text")
+            .attr("x", lineChartWidth / 2)
+            .attr("y", lineChartHeight + 0) // Adjusted position
+            .style("text-anchor", "middle")
+            .text("Months");
+
+        // Adding y-axis label
+        lineChartSvg
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -lineChartHeight / 2)
+            .attr("y", -0) // Adjusted position
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Value in Pounds");
+
+        // Adding chart name
+        lineChartSvg
+            .append("text")
+            .attr("x", lineChartWidth / 2)
+            .attr("y", -5) // Adjusted position
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text("Excess Meat Transactions vs Months");
+
         lineChartSvg
             .append("path")
             .datum(transactionsData)
@@ -145,13 +202,37 @@ export default function Dashboard() {
                     <Row>
                         <BarChart id="bar-chart"></BarChart>
                         <BarChart id="line-chart"></BarChart>
+                        <SaleViz>
+                            <SaleR>ESG rating</SaleR>
+                            <Main>
+                                {" "}
+                                BB <Sub> (+2%)</Sub>
+                            </Main>
+                            <SaleE>compared to previous month</SaleE>
+                        </SaleViz>
                     </Row>
                     <Row>
                         <Img src={GraphViz} alt="graph-viz" />
+
+                        <SaleViz>
+                            <SaleR>Total Excess Meat Transactions</SaleR>
+                            <Main>
+                                {" "}
+                                200 <Sub> (-2%)</Sub>
+                            </Main>
+                            <SaleE>compared to previous month</SaleE>
+                        </SaleViz>
+
+                        <SaleViz>
+                            <SaleR>Sales Frequency</SaleR>
+                            <Main>
+                                {" "}
+                                10.2 <Sub> (+1%)</Sub>
+                            </Main>
+                            <SaleE>compared to previous month</SaleE>
+                        </SaleViz>
                     </Row>
-                    <Row>
-                        
-                    </Row>
+                    <Row></Row>
                 </Col>
             ) : (
                 <>
@@ -175,6 +256,41 @@ const BarChart = styled.div`
     height: fit-content;
     padding: 24px;
     margin: 24px;
+`;
+
+const SaleViz = styled.div`
+    background: #ebebeb;
+    border-radius: 40px;
+    height: 280px;
+    width: 280px;
+    padding: 48px 24px;
+    margin: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+`;
+
+const SaleR = styled.h3`
+    font-size: 18px;
+    opacity: 0.6;
+`;
+const SaleE = styled.h5`
+    font-size: 12px;
+    opacity: 0.6;
+`;
+const Main = styled.h2`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 900;
+`;
+const Sub = styled.h4`
+    font-size: 20px;
+    opacity: 0.6;
+    margin-left: 8px;
 `;
 
 const Img = styled.img`

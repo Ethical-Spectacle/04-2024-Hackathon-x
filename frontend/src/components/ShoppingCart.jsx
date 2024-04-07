@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ShoppingCart({ total, setTotal }) {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [currentUser, setCurrentUser] = useState(undefined);
+    const navigate = useNavigate();
+
+    const toastOptions = {
+        position: "bottom-right",
+        autoClose: 8000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+    };
 
     console.log("total: ", total);
     const removeProduct = (index) => {
@@ -22,6 +34,25 @@ export default function ShoppingCart({ total, setTotal }) {
         setShowPopup(true);
     };
 
+    useEffect(() => {
+        async function isUserPresent() {
+            if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                navigate("/login");
+            } else {
+                setCurrentUser(
+                    await JSON.parse(
+                        localStorage.getItem(
+                            process.env.REACT_APP_LOCALHOST_KEY
+                        )
+                    )
+                );
+            }
+        }
+
+        isUserPresent();
+    }, []);
+
+    console.log("user present: ", currentUser);
     useEffect(() => {
         const quantities = JSON.parse(localStorage.getItem("quantities")) || {};
         const itemsData =
@@ -105,8 +136,31 @@ export default function ShoppingCart({ total, setTotal }) {
                     <div>Total Amount:</div>
                     <div>${(total + 5).toFixed(2)}</div>
                 </TotalAmountRow>
+                {currentUser && currentUser.type == "Seller" ? (
+                    <CheckoutButton
+                        onClick={() =>
+                            toast.success(
+                                "Items Added Successfully..",
+                                toastOptions
+                            )
+                        }
+                    >
+                        Add Items
+                    </CheckoutButton>
+                ) : (
+                    <CheckoutButton
+                        onClick={() =>
+                            toast.success(
+                                "Items Purchased Successfully..",
+                                toastOptions
+                            )
+                        }
+                    >
+                        Proceed to Purchase Items
+                    </CheckoutButton>
+                )}
             </ShoppingCartContainer>
-            
+
             {showPopup && (
                 <PopupBackground>
                     <PopupContent>
@@ -118,6 +172,7 @@ export default function ShoppingCart({ total, setTotal }) {
                     </PopupContent>
                 </PopupBackground>
             )}
+            <ToastContainer />
         </>
     );
 }
@@ -137,6 +192,29 @@ const Container = styled.div`
         justify-content: space-between;
         flex-direction: column;
         display: flex;
+    }
+`;
+
+const CheckoutButton = styled.button`
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-right: 20px;
+    margin-left: 12px;
+    height: 37px;
+    border-radius: 7px;
+    font-weight: bold;
+    color: white;
+    margin-top: 30px;
+
+    &:hover {
+        background-color: #724ccb;
     }
 `;
 
