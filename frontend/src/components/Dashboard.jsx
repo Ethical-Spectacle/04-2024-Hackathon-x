@@ -202,11 +202,11 @@ export default function Dashboard() {
                     <Row>
                         <BarChart id="bar-chart"></BarChart>
                         <BarChart id="line-chart"></BarChart>
-                        <SaleViz>
+                        <SaleViz style={{backgroundColor: "#4ed818"}}>
                             <SaleR>ESG rating</SaleR>
                             <Main>
                                 {" "}
-                                BB <Sub> (+2%)</Sub>
+                                80 <Sub> (+2%)</Sub>
                             </Main>
                             <SaleE>compared to previous month</SaleE>
                         </SaleViz>
@@ -218,7 +218,7 @@ export default function Dashboard() {
                             <SaleR>Total Excess Meat Transactions</SaleR>
                             <Main>
                                 {" "}
-                                200 <Sub> (-2%)</Sub>
+                                200 lbs<Sub> (-2%)</Sub>
                             </Main>
                             <SaleE>compared to previous month</SaleE>
                         </SaleViz>
@@ -227,7 +227,7 @@ export default function Dashboard() {
                             <SaleR>Sales Frequency</SaleR>
                             <Main>
                                 {" "}
-                                10.2 <Sub> (+1%)</Sub>
+                                10.2 <Sub>per week (+1%)</Sub>
                             </Main>
                             <SaleE>compared to previous month</SaleE>
                         </SaleViz>
