@@ -71,12 +71,14 @@ export default function ShoppingCart({ total, setTotal }) {
             const item = itemsData[i];
             const quantity = quantities[i] || 0;
             const mergedItem = { ...item, quantity }; // Merge item and quantity
-            tot += parseFloat(item.costPerPound) * parseFloat(quantity);
+
             mergedList.push(mergedItem);
         }
-        console.log("merge: ", mergedList);
         mergedList[0].costPerPound = beefPrice;
         mergedList[1].costPerPound = chickenPrice;
+        tot =
+            chickenPrice * mergedList[1].quantity +
+            chickenPrice * mergedList[1].quantity;
 
         setSelectedProduct(mergedList);
         setTotal(tot);
@@ -134,7 +136,7 @@ export default function ShoppingCart({ total, setTotal }) {
                 </SubtotalRow>
                 <TotalAmountRow>
                     <div>Total Amount:</div>
-                    <div>${(total + 5).toFixed(2)}</div>
+                    <div>${(total + total * 0.075).toFixed(2)}</div>
                 </TotalAmountRow>
                 {currentUser && currentUser.type == "Seller" ? (
                     <CheckoutButton
