@@ -7,8 +7,6 @@ const {
 
 const router = require("express").Router();
 
-console.log("auth js");
-
 router.post("/login", login);
 router.post("/register", register);
 router.get("/allusers/", getAllUsers);

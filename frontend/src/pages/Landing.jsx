@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Marketplace from "../components/Marketplace";
+import Dashboard from "../components/Dashboard";
 
 export default function Landing() {
     const navigate = useNavigate();
@@ -30,19 +33,25 @@ export default function Landing() {
     }, []);
 
     if (isLoading) {
-        return <Container><Loader /></Container>;
+        return (
+            <Container>
+                <Loader />
+            </Container>
+        );
     }
 
     return (
         <Container>
             <div className="container">
-                <Header currentUser={currentUser}/>
+                <Header currentUser={currentUser} />
+                {currentUser.type == "Seller" ? <Dashboard /> : <Marketplace />}
+                <Footer />
             </div>
         </Container>
     );
 }
 
-const Loader = () => <div>Loading...</div>; 
+const Loader = () => <div>Loading...</div>;
 
 const Container = styled.div`
     height: 100vh;
@@ -55,6 +64,9 @@ const Container = styled.div`
     .container {
         height: 85vh;
         width: 85vw;
-        background-color: #a4cdff76;
+        background-color: ##dcd4fe;
+        justify-content: space-between;
+        flex-direction: column;
+        display: flex;
     }
 `;
