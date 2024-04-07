@@ -91,8 +91,8 @@ const IconWrapper = styled.div`
 `;
 
 const UserImage = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     margin-right: 10px;
 `;

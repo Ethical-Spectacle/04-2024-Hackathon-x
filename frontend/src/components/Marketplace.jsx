@@ -229,6 +229,11 @@ const ModalImage = styled.img`
     border-radius: 8px;
 `;
 
+const Title = styled.h1`
+ margin-left: 30px;
+ font-size: 32px;
+`
+
 export default function Marketplace() {
     const [quantities, setQuantities] = useState(itemsData.map(() => 0));
     const [currentUser, setCurrentUser] = useState(undefined);
@@ -320,6 +325,7 @@ export default function Marketplace() {
 
     return (
         <Container>
+            <Title>Marketplace</Title>
             <ImagesContainer>
                 {itemsData.map((item, index) => (
                     <Card key={item.id}>
