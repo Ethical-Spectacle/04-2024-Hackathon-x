@@ -145,7 +145,7 @@ export default function ShoppingCart({ total, setTotal }) {
                             )
                         }
                     >
-                        Add Items
+                        List Items
                     </CheckoutButton>
                 ) : (
                     <CheckoutButton

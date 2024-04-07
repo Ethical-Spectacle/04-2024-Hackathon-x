@@ -105,7 +105,7 @@ const UserInfo = styled.div`
 const Name = styled.div`
     font-size: 18px;
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: auto;
 `;
 
 const HeaderButton = styled.button`

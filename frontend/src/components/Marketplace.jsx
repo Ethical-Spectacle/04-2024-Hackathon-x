@@ -230,9 +230,9 @@ const ModalImage = styled.img`
 `;
 
 const Title = styled.h1`
- margin-left: 30px;
- font-size: 32px;
-`
+    margin-left: 30px;
+    font-size: 32px;
+`;
 
 export default function Marketplace() {
     const [quantities, setQuantities] = useState(itemsData.map(() => 0));
@@ -386,7 +386,11 @@ export default function Marketplace() {
             </ImagesContainer>
 
             <CheckoutButton onClick={() => handleCheckout()}>
-                Checkout
+                {currentUser.type == "Seller" ? (
+                    <div>List Items</div>
+                ) : (
+                    <div>Checkout</div>
+                )}
             </CheckoutButton>
 
             {isModalOpen && <Modal onClose={handleModalClose} />}
