@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import styled from "styled-components";
 import * as d3 from "d3";
 import MyListings from "./MyListings";
+import GraphViz from "../images/graph-viz.png";
 
 export default function Dashboard() {
     const [selectedValue, setSelectedValue] = useState("Dashboard");
@@ -140,10 +141,18 @@ export default function Dashboard() {
                 setSelectedValue={setSelectedValue}
             />
             {selectedValue == "Dashboard" ? (
-                <>
-                    <BarChart id="bar-chart"></BarChart>
-                    <BarChart id="line-chart"></BarChart>
-                </>
+                <Col>
+                    <Row>
+                        <BarChart id="bar-chart"></BarChart>
+                        <BarChart id="line-chart"></BarChart>
+                    </Row>
+                    <Row>
+                        <Img src={GraphViz} alt="graph-viz" />
+                    </Row>
+                    <Row>
+                        
+                    </Row>
+                </Col>
             ) : (
                 <>
                     <MyListings />
@@ -166,4 +175,20 @@ const BarChart = styled.div`
     height: fit-content;
     padding: 24px;
     margin: 24px;
+`;
+
+const Img = styled.img`
+    width: auto;
+    height: 286px;
+    margin: 24px;
+    border-radius: 24px;
+`;
+
+const Row = styled.div`
+    display: flex;
+`;
+
+const Col = styled.div`
+    display: flex;
+    flex-direction: column;
 `;

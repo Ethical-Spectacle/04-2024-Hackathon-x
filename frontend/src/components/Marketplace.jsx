@@ -1,48 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import Analysis from "../images/analysis.jpeg";
 // Sample data for the items
 const itemsData = [
     {
         id: 1,
         imageUrl:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEGmY7Y20qTdCly8fUgQxV4zOO2SVrBW_d4uHy4kbggQ&s",
+            "https://images.albertsons-media.com/is/image/ABS/188100109?$ng-ecom-pdp-desktop$&defaultImage=Not_Available",
         type: "Beef",
+        min: 1.5,
+        max: 2.566,
         amount: "101.45 lb",
-        costPerPound: "$1.29",
+        costPerPound: 1.29,
     },
     {
         id: 2,
         imageUrl:
-            "https://www.allrecipes.com/thmb/SoBuPU73KcbYHl3Kp3j8Xx4A3fc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/8805-CrispyFriedChicken-mfs-3x2-072-d55b8406d4ae45709fcdeb58a04143c2.jpg",
+            "https://media.istockphoto.com/id/1085313230/photo/uncooked-chicken-legs-on-white-background.jpg?s=612x612&w=0&k=20&c=_MkbNakXWjog9u-Ev_IJPWpJ3SGfy_ZVnXR2sDcRTow=",
         type: "Chicken",
+        min: 1.25,
+        max: 2.05,
         amount: "9.5 lb",
-        costPerPound: "$1.34",
+        costPerPound: 1.34,
     },
     {
         id: 3,
         imageUrl:
-            "https://images.ctfassets.net/lufu0clouua1/2cSQKvJYskEqgyaAYawE48/7b71e49f5de264f38541c055926f8f5a/classic-roast-turkey.jpg",
+            "https://media.istockphoto.com/id/507755834/photo/raw-turkey.jpg?s=612x612&w=0&k=20&c=nRFy7172rBp5QbFtC8qfYQBi0_Pt46sRXLXHcw_9Xa0=",
         type: "Turkey",
+        min: 1.06,
+        max: 2.01,
         amount: "3.56 lb",
-        costPerPound: "$2.01",
+        costPerPound: 2.01,
     },
     {
         id: 4,
         imageUrl:
-            "https://www.tastingtable.com/img/gallery/x-different-ways-to-cook-fish/l-intro-1643135113.jpg",
+            "https://www.mashed.com/img/gallery/the-real-reason-youre-craving-raw-fish/intro-1595963116.jpg",
         type: "Fish",
+        min: 1.2,
+        max: 2.3,
         amount: "1.34 lb",
-        costPerPound: "$1.01",
+        costPerPound: 1.01,
     },
     {
         id: 5,
         imageUrl:
-            "https://images.getrecipekit.com/v1615995124_RedRubbedBabyLambChopsPg101_xyzuwo.jpg?aspect_ratio=1:1&quality=90&",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd5vBJUFha2m9jlRH0DznayV-wkQ21OilEti2zt08dBA&s",
         type: "Lamb",
+        min: 2,
+        max: 3.4,
         amount: "23.3 lb",
-        costPerPound: "$5.23",
+        costPerPound: 5.23,
     },
     // Add more items as needed
 ];
@@ -94,7 +104,36 @@ const BottomRow = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 12px 24px;
-    margin-top: 28%;
+    margin-top: 12%;
+`;
+
+const MiddleCostRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 12px;
+    margin-top: 16px;
+`;
+
+const MStyle = styled.div`
+    font-size: 12px;
+    width: fit-content;
+    margin: 0 6px;
+`;
+
+const StyledInput = styled.input`
+    font-size: 12px;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    outline: none;
+
+    &:hover,
+    &:focus {
+        background-color: #e0e0e0;
+    }
 `;
 
 const Minus = styled.div`
@@ -135,9 +174,82 @@ const CheckoutButton = styled.button`
     cursor: pointer;
 `;
 
+const Button = styled.button`
+    background-color: ${(props) => props.backgroundColor || "#4CAF50"};
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 72px;
+
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #45a049; /* Darker Green */
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:active {
+        background-color: #3e8e41; /* Active Dark Green */
+    }
+`;
+
+const Loader = () => <div>Loading...</div>;
+
+// Modal styled components
+const ModalBackground = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ModalContent = styled.div`
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+`;
+
+const ModalImage = styled.img`
+    width: 100%;
+    max-height: 80vh;
+    border-radius: 8px;
+`;
+
 export default function Marketplace() {
     const [quantities, setQuantities] = useState(itemsData.map(() => 0));
+    const [currentUser, setCurrentUser] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [priceValue, setPriceValue] = useState(1.5); // beef
+    const [chickenPriceValue, setChickenPriceValue] = useState(1.25); // chicken
+
     const navigate = useNavigate();
+
+    const handlePriceChange = (e) => {
+        // console.log("price value: ", e.target.min)
+        const inputValue = e.target.value;
+        if (e.target.min == 1.5) {
+            console.log("beef");
+            setPriceValue(inputValue);
+        } else if (e.target.min == 1.25) {
+            console.log("chicken");
+            setChickenPriceValue(inputValue);
+        }
+    };
 
     const handleIncrement = (index) => {
         const newQuantities = [...quantities];
@@ -156,8 +268,55 @@ export default function Marketplace() {
     const handleCheckout = () => {
         localStorage.setItem("quantities", JSON.stringify(quantities));
         localStorage.setItem("checkoutItems", JSON.stringify(itemsData));
+        localStorage.setItem("priceValue", JSON.stringify(priceValue));
+        localStorage.setItem("chpriceValue", JSON.stringify(chickenPriceValue));
         navigate("/checkout");
     };
+
+    useEffect(() => {
+        async function isUserPresent() {
+            if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                console.log("user not present");
+                navigate("/login");
+            } else {
+                setCurrentUser(
+                    await JSON.parse(
+                        localStorage.getItem(
+                            process.env.REACT_APP_LOCALHOST_KEY
+                        )
+                    )
+                );
+                console.log("user present");
+            }
+            setIsLoading(false);
+        }
+
+        isUserPresent();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <Container>
+                <Loader />
+            </Container>
+        );
+    }
+
+    const handleModalOpen = () => {
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
+    const Modal = ({ onClose }) => (
+        <ModalBackground onClick={onClose}>
+            <ModalContent>
+                <ModalImage src={Analysis} alt="Analysis" />
+            </ModalContent>
+        </ModalBackground>
+    );
 
     return (
         <Container>
@@ -168,8 +327,18 @@ export default function Marketplace() {
                         <Type>{item.type}</Type>
                         <Details>
                             <div>{item.amount}</div>
-                            <div>{item.costPerPound} per lb</div>
+                            <div>${item.costPerPound} per lb</div>
                         </Details>
+                        <MiddleCostRow>
+                            <MStyle>min: ${item.min}</MStyle>
+                            <StyledInput
+                                type="number"
+                                min={item.min} // Minimum value
+                                max={item.max} // Maximum value
+                                onChange={handlePriceChange}
+                            />
+                            <MStyle>max: ${item.max}</MStyle>
+                        </MiddleCostRow>
                         <BottomRow>
                             <Minus onClick={() => handleDecrement(index)}>
                                 -
@@ -182,6 +351,30 @@ export default function Marketplace() {
                                 +
                             </Plus>{" "}
                         </BottomRow>
+                        {currentUser && (
+                            <>
+                                {currentUser.type == "Seller" ? (
+                                    <Button
+                                        backgroundColor="#000"
+                                        onClick={() => {
+                                            handleModalOpen();
+                                        }}
+                                    >
+                                        {" "}
+                                        Analytics{" "}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        onClick={() => {
+                                            handleModalOpen();
+                                        }}
+                                    >
+                                        {" "}
+                                        Analytics{" "}
+                                    </Button>
+                                )}
+                            </>
+                        )}
                     </Card>
                 ))}
             </ImagesContainer>
@@ -189,6 +382,8 @@ export default function Marketplace() {
             <CheckoutButton onClick={() => handleCheckout()}>
                 Checkout
             </CheckoutButton>
+
+            {isModalOpen && <Modal onClose={handleModalClose} />}
         </Container>
     );
 }

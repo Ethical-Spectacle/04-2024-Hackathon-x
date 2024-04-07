@@ -26,22 +26,26 @@ export default function ShoppingCart({ total, setTotal }) {
         const quantities = JSON.parse(localStorage.getItem("quantities")) || {};
         const itemsData =
             JSON.parse(localStorage.getItem("checkoutItems")) || [];
+        const beefPrice = JSON.parse(localStorage.getItem("priceValue")) || 2;
+        const chickenPrice =
+            JSON.parse(localStorage.getItem("chpriceValue")) || 1.8;
+        console.log("bc: ", beefPrice, chickenPrice);
 
         // Assuming itemsData is an array of objects with imageUrl, type, amount, costPerPound, and quantity fields
-        console.log("qa ", quantities);
-        console.log("item: ", itemsData);
+        // console.log("qa ", quantities);
+        // console.log("item: ", itemsData);
         const mergedList = [];
         let tot = 0;
         for (let i = 0; i < itemsData.length; i++) {
             const item = itemsData[i];
             const quantity = quantities[i] || 0;
             const mergedItem = { ...item, quantity }; // Merge item and quantity
-            tot +=
-                parseFloat(item.costPerPound.split("$")[1]) *
-                parseFloat(quantity) *
-                parseFloat(item.amount.split("lb")[0]);
+            tot += parseFloat(item.costPerPound) * parseFloat(quantity);
             mergedList.push(mergedItem);
         }
+        console.log("merge: ", mergedList);
+        mergedList[0].costPerPound = beefPrice;
+        mergedList[1].costPerPound = chickenPrice;
 
         setSelectedProduct(mergedList);
         setTotal(tot);
@@ -54,8 +58,7 @@ export default function ShoppingCart({ total, setTotal }) {
                 <HeaderRow>
                     <HeaderCell>Product</HeaderCell>
                     <HeaderCell>Price/lb</HeaderCell>
-                    <HeaderCell>Qunantity</HeaderCell>
-                    <HeaderCell>Weight</HeaderCell>
+                    <HeaderCell>Quantity</HeaderCell>
                     <HeaderCell>Total Price</HeaderCell>
                     <HeaderCell>Remove</HeaderCell>
                     <HeaderCell></HeaderCell>
@@ -70,22 +73,14 @@ export default function ShoppingCart({ total, setTotal }) {
                                         alt={product.type}
                                     />
                                     <ProductName>
-                                        {product.costPerPound}
+                                        ${product.costPerPound}
                                     </ProductName>
                                     <div>{product.quantity}</div>
-                                    <div>{product.amount.split("lb")[0]}</div>
                                     <TotalPrice>
                                         $
                                         {(
-                                            parseFloat(
-                                                product.costPerPound.split(
-                                                    "$"
-                                                )[1]
-                                            ) *
-                                            parseFloat(product.quantity) *
-                                            parseFloat(
-                                                product.amount.split("lb")[0]
-                                            )
+                                            parseFloat(product.costPerPound) *
+                                            parseFloat(product.quantity)
                                         ).toFixed(2)}
                                     </TotalPrice>
 
@@ -103,14 +98,15 @@ export default function ShoppingCart({ total, setTotal }) {
                     <div>${total.toFixed(2)}</div>
                 </SubtotalRow>
                 <SubtotalRow>
-                    <div>Processing Fee:</div>
-                    <div>$5</div>
+                    <div>Processing Fee: (7.5%)</div>
+                    <div>${(total * 0.075).toFixed(2)}</div>
                 </SubtotalRow>
                 <TotalAmountRow>
                     <div>Total Amount:</div>
                     <div>${(total + 5).toFixed(2)}</div>
                 </TotalAmountRow>
             </ShoppingCartContainer>
+            
             {showPopup && (
                 <PopupBackground>
                     <PopupContent>
@@ -165,7 +161,7 @@ const Title = styled.h2`
 
 const HeaderRow = styled.div`
     display: grid;
-    grid-template-columns: 3fr 1.5fr 1fr 1fr auto 1.5fr 0.5fr;
+    grid-template-columns: 3fr 1.5fr 2fr 2fr auto;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
 `;
@@ -176,7 +172,7 @@ const HeaderCell = styled.div`
 
 const ProductRow = styled.div`
     display: grid;
-    grid-template-columns: 3fr 1.5fr 1fr 1fr auto 1.5fr 0.5fr;
+    grid-template-columns: 3fr 1.5fr 2fr 2fr auto;
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
@@ -186,6 +182,7 @@ const ProductImage = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 8px;
+    margin-left: 24px;
 `;
 
 const ProductName = styled.div`

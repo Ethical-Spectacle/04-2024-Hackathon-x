@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Logout from "./Logout";
-import ClientLogo from "../images/client-logo.png";
+import ClientLogo from "../images/logo.jpeg";
 import CustomerLogo from "../images/customer-logo.png";
 import { useNavigate } from "react-router-dom";
+import Marketplace from "./Marketplace";
 
-export default function Header({ currentUser }) {
+export default function Header({
+    currentUser,
+    showDashboard,
+    setShowDashboard,
+}) {
     // console.log("header: ", currentUser.type == "Seller");
     const navigate = useNavigate();
 
@@ -13,6 +18,10 @@ export default function Header({ currentUser }) {
         navigate("/");
         return;
     }
+
+    const handleDashboardClick = () => {
+        setShowDashboard(!showDashboard);
+    };
 
     return (
         <Container>
@@ -23,10 +32,33 @@ export default function Header({ currentUser }) {
                     <UserImage src={CustomerLogo} alt="Buyer User Image" />
                 )}
             </IconWrapper>
+            <IconWrapper></IconWrapper>
             {currentUser ? (
                 <>
                     <UserInfo>
                         <Name>{currentUser.username}</Name>
+                        {currentUser.type == "Seller" && (
+                            <>
+                                {!showDashboard ? (
+                                    <HeaderButton
+                                        onClick={() => {
+                                            handleDashboardClick();
+                                        }}
+                                    >
+                                        {" "}
+                                        Dashboard{" "}
+                                    </HeaderButton>
+                                ) : (
+                                    <HeaderButton
+                                        onClick={() => {
+                                            handleDashboardClick();
+                                        }}
+                                    >
+                                        Marketplace
+                                    </HeaderButton>
+                                )}
+                            </>
+                        )}
                         <Logout />
                     </UserInfo>
                 </>
@@ -72,8 +104,8 @@ const Name = styled.div`
     margin-right: 10px;
 `;
 
-const LogoutButton = styled.button`
-    background-color: #f44336;
+const HeaderButton = styled.button`
+    background-color: #a680ff;
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -82,8 +114,14 @@ const LogoutButton = styled.button`
     font-size: 14px;
     font-weight: bold;
     transition: background-color 0.3s ease;
+    margin-right: 20px;
+    margin-left: 12px;
+    height: 37px;
+    border-radius: 7px;
+    font-weight: bold;
+    color: black;
 
     &:hover {
-        background-color: #d32f2f;
+        background-color: #724ccb;
     }
 `;

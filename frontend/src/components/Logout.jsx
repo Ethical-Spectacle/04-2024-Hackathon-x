@@ -20,7 +20,11 @@ export default function Logout() {
 
     return (
         <Button onClick={handleClick}>
-            <h2>Logout</h2>
+            <h2
+                style={{ fontSize: "16px", height: "22px", padding: "3px 6px" }}
+            >
+                Logout
+            </h2>
         </Button>
     );
 }
@@ -35,7 +39,7 @@ const Button = styled.button`
     border: none;
     cursor: pointer;
     svg {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: #ebe7ff;
     }
 `;

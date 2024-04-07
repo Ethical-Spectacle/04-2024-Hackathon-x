@@ -10,6 +10,7 @@ export default function Landing() {
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
+    const [showDashboard, setShowDashboard] = useState(false);
 
     useEffect(() => {
         async function isUserPresent() {
@@ -43,8 +44,8 @@ export default function Landing() {
     return (
         <Container>
             <div className="container">
-                <Header currentUser={currentUser} />
-                {currentUser.type == "Seller" ? <Dashboard /> : <Marketplace />}
+                <Header currentUser={currentUser} showDashboard={showDashboard} setShowDashboard={setShowDashboard}/>
+                {showDashboard ? <Dashboard /> : <Marketplace />}
                 <Footer />
             </div>
         </Container>
@@ -64,7 +65,7 @@ const Container = styled.div`
     .container {
         height: 100vh;
         width: 100vw;
-        background-color: #dcd4fe;
+        background-color: #f3f0ff;
         justify-content: space-between;
         flex-direction: column;
         display: flex;
