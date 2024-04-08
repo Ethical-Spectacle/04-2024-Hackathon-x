@@ -10,7 +10,7 @@ export default function Landing() {
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
-    const [showDashboard, setShowDashboard] = useState(false);
+    const [showDashboard, setShowDashboard] = useState(true);
 
     useEffect(() => {
         async function isUserPresent() {
@@ -44,7 +44,11 @@ export default function Landing() {
     return (
         <Container>
             <div className="container">
-                <Header currentUser={currentUser} showDashboard={showDashboard} setShowDashboard={setShowDashboard}/>
+                <Header
+                    currentUser={currentUser}
+                    showDashboard={showDashboard}
+                    setShowDashboard={setShowDashboard}
+                />
                 {showDashboard ? <Dashboard /> : <Marketplace />}
                 <Footer />
             </div>
