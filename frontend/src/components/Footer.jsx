@@ -31,7 +31,7 @@ const Tagline = styled.p`
 export default function Footer() {
     return (
         <StyledFooter>
-            <Tagline>Repurposing Excess Food to save the earth</Tagline>
+            <Tagline>Surplus Solved</Tagline>
             <SocialMedia>
                 <SocialLink
                     href="https://www.facebook.com/"
