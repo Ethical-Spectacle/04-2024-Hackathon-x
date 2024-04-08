@@ -77,7 +77,7 @@ export default function ShoppingCart({ total, setTotal }) {
         mergedList[0].costPerPound = beefPrice;
         mergedList[1].costPerPound = chickenPrice;
         tot =
-            chickenPrice * mergedList[1].quantity +
+            beefPrice * mergedList[0].quantity +
             chickenPrice * mergedList[1].quantity;
 
         setSelectedProduct(mergedList);
@@ -150,16 +150,21 @@ export default function ShoppingCart({ total, setTotal }) {
                         List Items
                     </CheckoutButton>
                 ) : (
-                    <CheckoutButton
-                        onClick={() =>
-                            toast.success(
-                                "Items Purchased Successfully..",
-                                toastOptions
-                            )
-                        }
-                    >
-                        Proceed to Purchase Items
-                    </CheckoutButton>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <CheckoutButton
+                            onClick={() =>
+                                toast.success(
+                                    "Items Purchased Successfully..",
+                                    toastOptions
+                                )
+                            }
+                        >
+                            Proceed to Purchase Items
+                        </CheckoutButton>
+                        <p style={{ marginTop: "30px" }}>
+                            Payment Method: ***-**-6543
+                        </p>
+                    </div>
                 )}
             </ShoppingCartContainer>
 
